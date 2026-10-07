@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Brave</title>
+    <style>
+        :root {
+            --primary-color: rgb(49, 66, 110);
+            --primary-light: rgba(49, 66, 110, 0.7);
+            --glass-bg: rgba(10, 15, 25, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-color: #ffffff;
+            --hover-glow: 0 0 25px rgba(110, 150, 255, 0.4);
+            --accent-glow: rgba(200, 100, 255, 0.4); /* Un toque purpura para combinar con las espadas de Kirito */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-image: url('bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            align-items: flex-start; /* Alineado arriba */
+            justify-content: flex-end; /* Alineado a la derecha */
+            color: var(--text-color);
+            overflow: hidden;
+            padding: 4vw; /* Espacio desde los bordes */
+        }
+
+        /* Panel derecho flotante */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+            max-width: 400px; /* Ancho del panel */
+            animation: fadeInRight 1s ease-out;
+        }
+
+        /* ----- BUSCADOR ----- */
+        .search-wrapper {
+            width: 100%;
+        }
+
+        .search-form {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 18px 24px 18px 55px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .search-input:focus {
+            border-color: rgba(255,255,255,0.4);
+            background: rgba(10, 15, 25, 0.6);
+            box-shadow: var(--hover-glow);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            width: 22px;
+            height: 22px;
+            fill: rgba(255, 255, 255, 0.8);
+        }
+
+
+        /* ----- ACCESOS DIRECTOS ----- */
+        .bookmarks-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .bookmarks-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .bookmark-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bookmark-card:hover {
+            transform: translateY(-4px) scale(1.05);
+        }
+
+        .icon-circle {
+            width: 55px;
+            height: 55px;
+            border-radius: 16px; /* Bordes suaves */
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .bookmark-card:hover .icon-circle {
+            background: var(--primary-light);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: var(--accent-glow);
+        }
+
+        .icon-circle img {
+            width: 50%;
+            height: 50%;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        .bookmark-title {
+            font-size: 0.8rem;
+            text-align: center;
+            font-weight: 500;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.9);
+        }
+
+        .bookmark-card:hover .bookmark-title {
+            opacity: 1;
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Panel Derecho -->
+    <div class="right-panel">
+        
+        <!-- Buscador -->
+        <div class="search-wrapper">
+            <form class="search-form" action="https://search.brave.com/search" method="GET">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+                <input type="text" name="q" class="search-input" placeholder="Buscar en Brave..." autocomplete="off" autofocus>
+            </form>
+        </div>
+
+        <!-- Accesos Directos -->
+        <div class="bookmarks-container">
+            <div class="bookmarks-grid">
+                
+                <a href="https://github.com" class="bookmark-card">
+                    <div class="icon-circle"><img src="icons/github.svg" alt="GitHub"></div>
+                    <span class="bookmark-title">GitHub</span>
+                </a>
+
+                <a href="https://mail.google.com" class="bookmark-card">
+                    <div class="icon-circle"><img src="icons/gmail.svg" alt="Gmail"></div>
+                    <span class="bookmark-title">Gmail</span>
+                </a>
+
+                <a href="https://youtube.com" class="bookmark-card">
+                    <div class="icon-circle"><img src="icons/youtube.svg" alt="YouTube"></div>
+                    <span class="bookmark-title">YouTube</span>
+                </a>
+
+                <a href="https://gemini.google.com" class="bookmark-card">
+                    <div class="icon-circle"><img src="icons/gemini.svg" alt="Gemini"></div>
+                    <span class="bookmark-title">Gemini</span>
+                </a>
+                
+                <a href="https://kimi.moonshot.cn/" class="bookmark-card">
+                    <div class="icon-circle"><img src="icons/kimi.svg" alt="Kimi"></div>
+                    <span class="bookmark-title">Kimi</span>
+                </a>
+
+                <a href="https://chat.deepseek.com/" class="bookmark-card">
+                    <div class="icon-circle"><img src="icons/deepseek.svg" alt="DeepSeek"></div>
+                    <span class="bookmark-title">DeepSeek</span>
+                </a>
+
+                <a href="https://notebooklm.google.com/" class="bookmark-card">
+                    <div class="icon-circle"><img src="icons/notebooklm.svg" alt="NotebookLM"></div>
+                    <span class="bookmark-title">NotebookLM</span>
+                </a>
+
+                <a href="https://claude.ai" class="bookmark-card">
+                    <div class="icon-circle"><img src="icons/claude.svg" alt="Claude"></div>
+                    <span class="bookmark-title">Claude</span>
+                </a>
+
+                <a href="https://ies5tello-juj.infd.edu.ar/aula/acceso.cgi" class="bookmark-card">
+                    <div class="icon-circle"><img src="icons/ies_tello.svg" alt="IES Tello"></div>
+                    <span class="bookmark-title">IES Tello</span>
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
