@@ -238,17 +238,30 @@
             fill: #000000;
         }
 
-        /* CENTRO: BARRA DE BÚSQUEDA SPOTLIGHT STEALTH */
-        .search-center {
+        /* CENTRO: TOP BAR espaciador para no tapar la cara de Miku */
+        .topbar-spacer {
+            flex: 1;
+        }
+
+        /* BARRA DE BÚSQUEDA FLOTANTE INFERIOR DERECHA (No tapa a Miku en el centro) */
+        .bottom-search-wrapper {
+            position: fixed;
+            bottom: 24px;
+            right: 32px;
+            z-index: 100;
             display: flex;
-            justify-content: center;
-            width: 100%;
+            align-items: center;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .search-pill-container {
-            width: 100%;
-            max-width: 440px;
+            width: 320px;
             position: relative;
+            transition: width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .search-pill-container:focus-within {
+            width: 390px;
         }
 
         .search-form {
@@ -260,17 +273,17 @@
 
         .search-input {
             width: 100%;
-            padding: 11px 40px 11px 42px;
+            padding: 10px 42px 10px 46px;
             border-radius: 50px;
             border: 1px solid var(--glass-border);
             background: var(--glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             color: #ffffff;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             outline: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
         }
 
         .search-input::placeholder {
@@ -278,24 +291,25 @@
         }
 
         .search-input:focus {
-            border-color: #ffffff;
-            background: rgba(15, 15, 24, 0.75);
-            box-shadow: 0 0 25px var(--glow-soft), 0 10px 30px rgba(0, 0, 0, 0.8);
-            transform: scale(1.02);
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(12, 14, 22, 0.85);
+            box-shadow: 0 0 25px var(--glow-soft), 0 12px 35px rgba(0, 0, 0, 0.85);
         }
 
-        .search-icon-left {
+        /* Canvas Thinking Orb en reemplazo de la lupa */
+        .search-orb-canvas {
             position: absolute;
-            left: 15px;
-            width: 16px;
-            height: 16px;
-            fill: rgba(255, 255, 255, 0.5);
+            left: 14px;
+            width: 22px;
+            height: 22px;
             pointer-events: none;
-            transition: fill 0.3s ease;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4));
         }
 
-        .search-input:focus ~ .search-icon-left {
-            fill: #ffffff;
+        .search-input:focus ~ .search-orb-canvas {
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.8));
         }
 
         .search-shortcut-hint {
@@ -577,13 +591,30 @@
                 grid-template-columns: 1fr;
                 gap: 14px;
             }
-            .player-pill, .search-center, .shortcuts-dock {
+            .player-pill, .shortcuts-dock {
                 max-width: 100%;
                 justify-content: center;
             }
             .shortcuts-dock {
                 overflow-x: auto;
                 max-width: 100%;
+            }
+            .bottom-search-wrapper {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                margin-top: 15px;
+                width: 100%;
+                justify-content: center;
+            }
+            .search-pill-container {
+                width: 100%;
+                max-width: 380px;
+            }
+            .hud-footer {
+                flex-direction: column-reverse;
+                align-items: center;
+                gap: 12px;
             }
         }
     </style>
@@ -633,18 +664,8 @@
             <audio id="audioElement" preload="auto"></audio>
         </div>
 
-        <!-- CENTRO: Buscador Stealth Spotlight -->
-        <div class="search-center">
-            <div class="search-pill-container">
-                <form class="search-form" action="https://search.brave.com/search" method="GET">
-                    <input type="text" id="searchInput" name="q" class="search-input" placeholder="Buscar en Brave..." autocomplete="off">
-                    <svg class="search-icon-left" viewBox="0 0 24 24">
-                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                    </svg>
-                    <span class="search-shortcut-hint">/</span>
-                </form>
-            </div>
-        </div>
+        <!-- ESPACIADOR: Deja la zona central completamente despejada para la cara y el halo de Miku -->
+        <div class="topbar-spacer"></div>
 
         <!-- DERECHA: Dock Flotante de Accesos Rápidos con Tooltips -->
         <nav class="shortcuts-dock">
@@ -735,6 +756,18 @@
 
     </header>
 
+    <!-- BUSCADOR FLOTANTE INFERIOR DERECHO: Despeja por completo el centro y la vista de Miku -->
+    <div class="bottom-search-wrapper">
+        <div class="search-pill-container">
+            <form class="search-form" action="https://search.brave.com/search" method="GET">
+                <input type="text" id="searchInput" name="q" class="search-input" placeholder="Buscar en Brave..." autocomplete="off">
+                <!-- Thinking-Orb animado de Jakub Antalik reemplazando la lupa tradicional -->
+                <canvas id="searchOrbCanvas" class="search-orb-canvas" width="44" height="44" title="Búsqueda Inteligente"></canvas>
+                <span class="search-shortcut-hint">/</span>
+            </form>
+        </div>
+    </div>
+
     <!-- FOOTER: Atajos Rápidos de Teclado -->
     <footer class="hud-footer">
         <div class="key-hints">
@@ -743,6 +776,131 @@
             <span class="key-hint"><span class="kbd-badge">←</span> <span class="kbd-badge">→</span> Pista</span>
         </div>
     </footer>
+
+    <!-- Jakub Antalik - Thinking Orbs Canvas Engine (Optimizado e Integrado) -->
+    <script>
+    (function initThinkingOrb() {
+        const orbCanvas = document.getElementById('searchOrbCanvas');
+        if (!orbCanvas) return;
+        const octx = orbCanvas.getContext('2d');
+        if (!octx) return;
+
+        const size = 22; // Renderizado nítido en 22px con DPR=2 (canvas físico 44x44)
+        const dpr = Math.min(2, window.devicePixelRatio || 1);
+        orbCanvas.width = Math.round(size * dpr);
+        orbCanvas.height = Math.round(size * dpr);
+
+        // Algoritmo matemático original de Jakub Antalik (Thinking Orbs - Globe mode para Searching)
+        const spin = 0.52;
+        const cx = size / 2;
+        const cy = size / 2;
+        const radius = (size / 2) * 0.84;
+        const latRings = 9;
+        const lonDensity = 22;
+        const rs = Math.pow(size / 300, 0.6) * 1.7; // Escala adaptada para 22px inline
+        const speed = 2.4;
+
+        function angleDelta(a, b) {
+            return Math.atan2(Math.sin(a - b), Math.cos(a - b));
+        }
+
+        let isHoveredOrFocused = false;
+        const searchInputEl = document.getElementById('searchInput');
+        if (searchInputEl) {
+            searchInputEl.addEventListener('focus', () => { isHoveredOrFocused = true; });
+            searchInputEl.addEventListener('blur', () => { isHoveredOrFocused = false; });
+        }
+
+        function drawFrame(nowSec) {
+            octx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            octx.clearRect(0, 0, size, size);
+
+            const t = nowSec * (isHoveredOrFocused ? speed * 1.6 : speed);
+            const tilt = 0.4 + 0.08 * Math.sin(t * 0.35);
+            const st = Math.sin(tilt);
+            const ct = Math.cos(tilt);
+            const sy = Math.sin(t * spin);
+            const cyw = Math.cos(t * spin);
+
+            // Proyector ortográfico 3D
+            const proj = (x, y, z) => {
+                const x1 = x * cyw + z * sy;
+                const z1 = -x * sy + z * cyw;
+                const y1 = y * ct - z1 * st;
+                const z2 = y * st + z1 * ct;
+                return [cx + x1 * radius, cy - y1 * radius, z2];
+            };
+
+            const scan = t * (spin + 1.2 * 3.8);
+            const dots = [];
+
+            for (let li = 0; li <= latRings; li++) {
+                const lat = -Math.PI / 2 + (li / latRings) * Math.PI;
+                const cosLat = Math.cos(lat);
+                const sinLat = Math.sin(lat);
+                const lonCount = Math.max(1, Math.round(Math.abs(cosLat) * lonDensity));
+
+                for (let lj = 0; lj < lonCount; lj++) {
+                    const lon = (lj / lonCount) * 2 * Math.PI;
+                    const [px, py, z] = proj(cosLat * Math.cos(lon), sinLat, cosLat * Math.sin(lon));
+                    const depth = (z + 1) / 2;
+
+                    // Onda de escaneo (Scan ripple)
+                    const d = angleDelta(lon + t * spin, scan);
+                    const boost = Math.exp(-(d * d) / 0.2) * Math.max(0, z);
+
+                    const r = Math.max(0.4, (0.5 + 1.6 * depth + 0.9 * boost) * rs);
+                    const white = 0.62 - 0.54 * depth;
+                    const alpha = 0.35 + 0.65 * Math.min(1, boost * 1.4 + depth * 0.4);
+
+                    dots.push({ x: px, y: py, z, r, white, a: alpha });
+                }
+            }
+
+            // Ordenamiento por profundidad Z (far -> near)
+            dots.sort((a, b) => a.z - b.z);
+
+            // Pintado en Canvas 2D
+            for (let i = 0; i < dots.length; i++) {
+                const pt = dots[i];
+                // En dark substrate, invertimos para que los puntos frontales brillen en blanco/cyan
+                const w = Math.min(1, Math.max(0, pt.white));
+                const g = Math.round((1 - w) * 255);
+                
+                if (isHoveredOrFocused) {
+                    octx.fillStyle = `rgba(0, ${Math.min(255, g + 80)}, 255, ${pt.a})`;
+                } else {
+                    octx.fillStyle = `rgba(${g}, ${g}, ${Math.min(255, g + 25)}, ${pt.a})`;
+                }
+
+                octx.beginPath();
+                octx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
+                octx.fill();
+            }
+        }
+
+        let raf = 0;
+        let running = true;
+        function loop() {
+            if (running) {
+                drawFrame(performance.now() / 1000);
+                raf = requestAnimationFrame(loop);
+            }
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') {
+                running = false;
+                cancelAnimationFrame(raf);
+            } else {
+                running = true;
+                raf = requestAnimationFrame(loop);
+            }
+        });
+
+        raf = requestAnimationFrame(loop);
+    })();
+    </script>
 
     <script src="music/playlist_data.js"></script>
     <script src="player.js"></script>
