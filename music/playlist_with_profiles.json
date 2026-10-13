@@ -1,0 +1,422 @@
+[
+  {
+    "id": 1,
+    "title": "Esperón - Tristella",
+    "file": "music/track_1.mp3",
+    "profile": {
+      "bpm": 70,
+      "intensity": 1.59,
+      "direction": "down",
+      "speed": 0.6,
+      "starCount": 35,
+      "sizeMultiplier": 1.36,
+      "paletteName": "Ethereal Moonlight (Chill / Suave)",
+      "colors": [
+        "#93c5fd",
+        "#e0e7ff",
+        "#c7d2fe",
+        "#ffffff"
+      ],
+      "glowColor": "rgba(147, 197, 253, 0.45)"
+    }
+  },
+  {
+    "id": 2,
+    "title": "I can't stop the loneliness ｜ ANRI ｜ Sub.Español ｜ Lyrics ｜",
+    "file": "music/track_2.mp3",
+    "profile": {
+      "bpm": 129,
+      "intensity": 1.2,
+      "direction": "up",
+      "speed": 1.29,
+      "starCount": 61,
+      "sizeMultiplier": 1.22,
+      "paletteName": "Cosmic Cyberpunk (Energía Media-Alta)",
+      "colors": [
+        "#a855f7",
+        "#ec4899",
+        "#38bdf8",
+        "#f43f5e"
+      ],
+      "glowColor": "rgba(168, 85, 247, 0.6)"
+    }
+  },
+  {
+    "id": 3,
+    "title": "Impostor Syndrome - Sidney Gish (Sub Español + Lyrics)",
+    "file": "music/track_3.mp3",
+    "profile": {
+      "bpm": 76,
+      "intensity": 1.05,
+      "direction": "down",
+      "speed": 0.72,
+      "starCount": 37,
+      "sizeMultiplier": 1.17,
+      "paletteName": "Ethereal Moonlight (Chill / Suave)",
+      "colors": [
+        "#93c5fd",
+        "#e0e7ff",
+        "#c7d2fe",
+        "#ffffff"
+      ],
+      "glowColor": "rgba(147, 197, 253, 0.45)"
+    }
+  },
+  {
+    "id": 4,
+    "title": "Jósean Log - Doma (Lyric Video)",
+    "file": "music/track_4.mp3",
+    "profile": {
+      "bpm": 136,
+      "intensity": 1.99,
+      "direction": "up",
+      "speed": 1.29,
+      "starCount": 64,
+      "sizeMultiplier": 1.5,
+      "paletteName": "Supernova Neon (Alta Energía)",
+      "colors": [
+        "#ff007f",
+        "#00f0ff",
+        "#ffe600",
+        "#ffffff"
+      ],
+      "glowColor": "rgba(255, 0, 128, 0.7)"
+    }
+  },
+  {
+    "id": 6,
+    "title": "Amar Como Tú - Steven Universe (Letra).",
+    "file": "music/track_6.mp3",
+    "profile": {
+      "bpm": 117,
+      "intensity": 0.83,
+      "direction": "up",
+      "speed": 1.14,
+      "starCount": 56,
+      "sizeMultiplier": 1.09,
+      "paletteName": "Deep Nebula (Medio)",
+      "colors": [
+        "#06b6d4",
+        "#3b82f6",
+        "#818cf8",
+        "#c084fc"
+      ],
+      "glowColor": "rgba(6, 182, 212, 0.55)"
+    }
+  },
+  {
+    "id": 7,
+    "title": "Arctic Monkeys - 505 ( My Dress-Up Darling ) ( KzNicxz - Tipografia )",
+    "file": "music/track_7.mp3",
+    "profile": {
+      "bpm": 70,
+      "intensity": 1.35,
+      "direction": "down",
+      "speed": 0.6,
+      "starCount": 35,
+      "sizeMultiplier": 1.27,
+      "paletteName": "Ethereal Moonlight (Chill / Suave)",
+      "colors": [
+        "#93c5fd",
+        "#e0e7ff",
+        "#c7d2fe",
+        "#ffffff"
+      ],
+      "glowColor": "rgba(147, 197, 253, 0.45)"
+    }
+  },
+  {
+    "id": 8,
+    "title": "Cuarteto de Nos - Enamorado Tuyo ❤️(Letra) ⧸ AMV",
+    "file": "music/track_8.mp3",
+    "profile": {
+      "bpm": 96,
+      "intensity": 2.02,
+      "direction": "both",
+      "speed": 0.88,
+      "starCount": 46,
+      "sizeMultiplier": 1.51,
+      "paletteName": "Supernova Neon (Alta Energía)",
+      "colors": [
+        "#ff007f",
+        "#00f0ff",
+        "#ffe600",
+        "#ffffff"
+      ],
+      "glowColor": "rgba(255, 0, 128, 0.7)"
+    }
+  },
+  {
+    "id": 9,
+    "title": "Djo - End Of Beggining (Español + Lyrics) ｜ Stranger Things",
+    "file": "music/track_9.mp3",
+    "profile": {
+      "bpm": 81,
+      "intensity": 0.91,
+      "direction": "down",
+      "speed": 0.82,
+      "starCount": 39,
+      "sizeMultiplier": 1.12,
+      "paletteName": "Amber Twilight (Cálido / Rítmico)",
+      "colors": [
+        "#f59e0b",
+        "#f97316",
+        "#fbbf24",
+        "#f43f5e"
+      ],
+      "glowColor": "rgba(245, 158, 11, 0.55)"
+    }
+  },
+  {
+    "id": 10,
+    "title": "Doja Cat - Woman (Sub. Español + Lyrics)",
+    "file": "music/track_10.mp3",
+    "profile": {
+      "bpm": 108,
+      "intensity": 1.9,
+      "direction": "both",
+      "speed": 1.03,
+      "starCount": 52,
+      "sizeMultiplier": 1.46,
+      "paletteName": "Supernova Neon (Alta Energía)",
+      "colors": [
+        "#ff007f",
+        "#00f0ff",
+        "#ffe600",
+        "#ffffff"
+      ],
+      "glowColor": "rgba(255, 0, 128, 0.7)"
+    }
+  },
+  {
+    "id": 11,
+    "title": "Esperón - Solare (Letra)",
+    "file": "music/track_11.mp3",
+    "profile": {
+      "bpm": 129,
+      "intensity": 1.78,
+      "direction": "up",
+      "speed": 1.29,
+      "starCount": 61,
+      "sizeMultiplier": 1.42,
+      "paletteName": "Cosmic Cyberpunk (Energía Media-Alta)",
+      "colors": [
+        "#a855f7",
+        "#ec4899",
+        "#38bdf8",
+        "#f43f5e"
+      ],
+      "glowColor": "rgba(168, 85, 247, 0.6)"
+    }
+  },
+  {
+    "id": 12,
+    "title": "Glup! •Freebola• [LETRA] ｜｜ Katie Mitchell",
+    "file": "music/track_12.mp3",
+    "profile": {
+      "bpm": 136,
+      "intensity": 1.08,
+      "direction": "up",
+      "speed": 1.29,
+      "starCount": 64,
+      "sizeMultiplier": 1.18,
+      "paletteName": "Supernova Neon (Alta Energía)",
+      "colors": [
+        "#ff007f",
+        "#00f0ff",
+        "#ffe600",
+        "#ffffff"
+      ],
+      "glowColor": "rgba(255, 0, 128, 0.7)"
+    }
+  },
+  {
+    "id": 13,
+    "title": "Good Kid - From The Start (Laufey Cover)",
+    "file": "music/track_13.mp3",
+    "profile": {
+      "bpm": 123,
+      "intensity": 1.92,
+      "direction": "up",
+      "speed": 1.21,
+      "starCount": 58,
+      "sizeMultiplier": 1.47,
+      "paletteName": "Supernova Neon (Alta Energía)",
+      "colors": [
+        "#ff007f",
+        "#00f0ff",
+        "#ffe600",
+        "#ffffff"
+      ],
+      "glowColor": "rgba(255, 0, 128, 0.7)"
+    }
+  },
+  {
+    "id": 14,
+    "title": "Harry Styles - Sign Of The Times (sub. español) ｜ Project Hail Mary",
+    "file": "music/track_14.mp3",
+    "profile": {
+      "bpm": 117,
+      "intensity": 1.6,
+      "direction": "up",
+      "speed": 1.14,
+      "starCount": 56,
+      "sizeMultiplier": 1.36,
+      "paletteName": "Deep Nebula (Medio)",
+      "colors": [
+        "#06b6d4",
+        "#3b82f6",
+        "#818cf8",
+        "#c084fc"
+      ],
+      "glowColor": "rgba(6, 182, 212, 0.55)"
+    }
+  },
+  {
+    "id": 15,
+    "title": "Kate Bush - Running Up That Hill (Subtitulado en español) Stranger Things 4 (4x04)",
+    "file": "music/track_15.mp3",
+    "profile": {
+      "bpm": 108,
+      "intensity": 0.68,
+      "direction": "both",
+      "speed": 1.03,
+      "starCount": 52,
+      "sizeMultiplier": 1.04,
+      "paletteName": "Deep Nebula (Medio)",
+      "colors": [
+        "#06b6d4",
+        "#3b82f6",
+        "#818cf8",
+        "#c084fc"
+      ],
+      "glowColor": "rgba(6, 182, 212, 0.55)"
+    }
+  },
+  {
+    "id": 16,
+    "title": "Laufey - From The Start (Official Music Video)",
+    "file": "music/track_16.mp3",
+    "profile": {
+      "bpm": 81,
+      "intensity": 2.0,
+      "direction": "down",
+      "speed": 0.82,
+      "starCount": 39,
+      "sizeMultiplier": 1.5,
+      "paletteName": "Supernova Neon (Alta Energía)",
+      "colors": [
+        "#ff007f",
+        "#00f0ff",
+        "#ffe600",
+        "#ffffff"
+      ],
+      "glowColor": "rgba(255, 0, 128, 0.7)"
+    }
+  },
+  {
+    "id": 17,
+    "title": "Mr. Loverman",
+    "file": "music/track_17.mp3",
+    "profile": {
+      "bpm": 129,
+      "intensity": 1.53,
+      "direction": "up",
+      "speed": 1.29,
+      "starCount": 61,
+      "sizeMultiplier": 1.33,
+      "paletteName": "Cosmic Cyberpunk (Energía Media-Alta)",
+      "colors": [
+        "#a855f7",
+        "#ec4899",
+        "#38bdf8",
+        "#f43f5e"
+      ],
+      "glowColor": "rgba(168, 85, 247, 0.6)"
+    }
+  },
+  {
+    "id": 18,
+    "title": "Wait By The River - Digital Circus ｜ Cover Español Latino",
+    "file": "music/track_18.mp3",
+    "profile": {
+      "bpm": 161,
+      "intensity": 1.3,
+      "direction": "up",
+      "speed": 1.64,
+      "starCount": 75,
+      "sizeMultiplier": 1.25,
+      "paletteName": "Supernova Neon (Alta Energía)",
+      "colors": [
+        "#ff007f",
+        "#00f0ff",
+        "#ffe600",
+        "#ffffff"
+      ],
+      "glowColor": "rgba(255, 0, 128, 0.7)"
+    }
+  },
+  {
+    "id": 19,
+    "title": "Y es que me encantas tanto, si me miras mientras canto ⧸⧸ Mon amour Remix (Letra)~ Idoly pride dance",
+    "file": "music/track_19.mp3",
+    "profile": {
+      "bpm": 117,
+      "intensity": 1.06,
+      "direction": "up",
+      "speed": 1.14,
+      "starCount": 56,
+      "sizeMultiplier": 1.17,
+      "paletteName": "Deep Nebula (Medio)",
+      "colors": [
+        "#06b6d4",
+        "#3b82f6",
+        "#818cf8",
+        "#c084fc"
+      ],
+      "glowColor": "rgba(6, 182, 212, 0.55)"
+    }
+  },
+  {
+    "id": 20,
+    "title": "impacto - enjambre ⧸⧸ ft. lo blondo (letra + amv)",
+    "file": "music/track_20.mp3",
+    "profile": {
+      "bpm": 108,
+      "intensity": 1.31,
+      "direction": "both",
+      "speed": 1.03,
+      "starCount": 52,
+      "sizeMultiplier": 1.26,
+      "paletteName": "Deep Nebula (Medio)",
+      "colors": [
+        "#06b6d4",
+        "#3b82f6",
+        "#818cf8",
+        "#c084fc"
+      ],
+      "glowColor": "rgba(6, 182, 212, 0.55)"
+    }
+  },
+  {
+    "id": 21,
+    "title": "＂Nosotros construimos esta casa en recuerdos...＂ 💔 ｜ The Owl House",
+    "file": "music/track_21.mp3",
+    "profile": {
+      "bpm": 112,
+      "intensity": 1.8,
+      "direction": "both",
+      "speed": 1.08,
+      "starCount": 53,
+      "sizeMultiplier": 1.43,
+      "paletteName": "Supernova Neon (Alta Energía)",
+      "colors": [
+        "#ff007f",
+        "#00f0ff",
+        "#ffe600",
+        "#ffffff"
+      ],
+      "glowColor": "rgba(255, 0, 128, 0.7)"
+    }
+  }
+]

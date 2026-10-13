@@ -51,7 +51,7 @@
             color: var(--text);
         }
 
-        /* Canvas sutil de partículas de sonido reactivas */
+        /* Canvas de partículas y estrellas reactivas */
         #soundCanvas {
             position: fixed;
             top: 0;
@@ -60,6 +60,7 @@
             height: 100%;
             pointer-events: none;
             z-index: 1;
+            mix-blend-mode: screen;
         }
 
         /* ----- TOP BAR: HUD MINIMALISTA (Estilo r/unixporn & macOS Status Bar) ----- */
@@ -317,16 +318,18 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 50px;
-            padding: 5px 10px;
+            padding: 6px 12px;
             display: flex;
             align-items: center;
             gap: 6px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .shortcuts-dock:hover {
             border-color: var(--glass-border-hover);
+            gap: 12px; /* Efecto de separación cuando el cursor entra en el dock */
+            padding: 6px 16px;
         }
 
         .dock-item {
@@ -340,14 +343,18 @@
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+            flex-shrink: 0;
         }
 
+        /* Separación y magnificación expansiva al hacer hover */
         .dock-item:hover {
-            background: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.22);
             border-color: #ffffff;
-            transform: translateY(-4px) scale(1.18);
-            box-shadow: 0 6px 20px var(--glow-soft);
+            transform: translateY(-5px) scale(1.28);
+            box-shadow: 0 8px 24px var(--glow-soft);
+            margin: 0 4px; /* Mayor separación del elemento activo */
+            z-index: 10;
         }
 
         .dock-item img {
@@ -355,6 +362,11 @@
             height: 19px;
             object-fit: contain;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+            transition: transform 0.25s ease;
+        }
+
+        .dock-item:hover img {
+            transform: scale(1.1);
         }
 
         /* Tooltip Flotante */
@@ -535,6 +547,11 @@
                 <span class="tooltip">Gemini</span>
             </a>
 
+            <a href="https://chat.qwen.ai/" class="dock-item">
+                <img src="icons/qwen.svg" alt="Qwen">
+                <span class="tooltip">Qwen AI</span>
+            </a>
+
             <a href="https://kimi.moonshot.cn/" class="dock-item">
                 <img src="icons/kimi.svg" alt="Kimi">
                 <span class="tooltip">Kimi</span>
@@ -551,6 +568,16 @@
             <a href="https://github.com" class="dock-item">
                 <img src="icons/github.svg" alt="GitHub">
                 <span class="tooltip">GitHub</span>
+            </a>
+
+            <a href="https://skills.sh/" class="dock-item">
+                <img src="icons/skills.svg" alt="Skills.sh">
+                <span class="tooltip">Skills.sh</span>
+            </a>
+
+            <a href="https://www.reddit.com/" class="dock-item">
+                <img src="icons/reddit.svg" alt="Reddit">
+                <span class="tooltip">Reddit</span>
             </a>
 
             <a href="https://mail.google.com" class="dock-item">
@@ -584,145 +611,7 @@
         </div>
     </footer>
 
-    <script>
-        const playlist = [
-            { title: "Esperón - Tristella", file: "music/track_1.mp3" },
-            { title: "ANRI - I Can't Stop The Loneliness", file: "music/track_2.mp3" },
-            { title: "Sidney Gish - Impostor Syndrome", file: "music/track_3.mp3" },
-            { title: "Jósean Log - Doma", file: "music/track_4.mp3" },
-            { title: "Son las 5 de la mañana", file: "music/track_5.mp3" }
-        ];
-
-        let songIndex = 0;
-        let isAudioPlaying = false;
-
-        const audio = document.getElementById('audioElement');
-        const playBtn = document.getElementById('playBtn');
-        const playIcon = document.getElementById('playIcon');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const vinylDisc = document.getElementById('vinylDisc');
-        const soundEq = document.getElementById('soundEq');
-        const trackTitle = document.getElementById('trackTitle');
-        const searchInput = document.getElementById('searchInput');
-
-        audio.volume = 1.0;
-
-        function loadSong(index) {
-            songIndex = index;
-            const song = playlist[songIndex];
-            audio.src = song.file;
-            trackTitle.textContent = song.title;
-        }
-
-        function togglePlay() {
-            if (isAudioPlaying) {
-                audio.pause();
-            } else {
-                audio.volume = 1.0;
-                audio.play().catch(e => console.error(e));
-            }
-        }
-
-        function prevTrack() {
-            songIndex = (songIndex - 1 + playlist.length) % playlist.length;
-            loadSong(songIndex);
-            if (isAudioPlaying) audio.play().catch(e => console.error(e));
-        }
-
-        function nextTrack() {
-            songIndex = (songIndex + 1) % playlist.length;
-            loadSong(songIndex);
-            if (isAudioPlaying) audio.play().catch(e => console.error(e));
-        }
-
-        audio.addEventListener('play', () => {
-            isAudioPlaying = true;
-            vinylDisc.classList.add('playing');
-            soundEq.classList.add('active');
-            playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
-        });
-
-        audio.addEventListener('pause', () => {
-            isAudioPlaying = false;
-            vinylDisc.classList.remove('playing');
-            soundEq.classList.remove('active');
-            playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-        });
-
-        audio.addEventListener('ended', () => {
-            nextTrack();
-            audio.play().catch(e => console.error(e));
-        });
-
-        playBtn.addEventListener('click', togglePlay);
-        prevBtn.addEventListener('click', prevTrack);
-        nextBtn.addEventListener('click', nextTrack);
-
-        // Teclado (r/startpages power-user shortcuts)
-        window.addEventListener('keydown', (e) => {
-            if (document.activeElement === searchInput) {
-                if (e.key === 'Escape') searchInput.blur();
-                return;
-            }
-            if (e.key === '/') {
-                e.preventDefault();
-                searchInput.focus();
-            } else if (e.code === 'Space') {
-                e.preventDefault();
-                togglePlay();
-            } else if (e.key === 'ArrowRight') {
-                e.preventDefault();
-                nextTrack();
-            } else if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                prevTrack();
-            }
-        });
-
-        // Partículas de luz estelares sutiles en el fondo que reaccionan al compás
-        const canvas = document.getElementById('soundCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        for (let i = 0; i < 40; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: Math.random() * 1.5 + 0.5,
-                alpha: Math.random() * 0.5 + 0.2,
-                speed: Math.random() * 0.3 + 0.1
-            });
-        }
-
-        function animateStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius * (isAudioPlaying ? 1.4 : 1), 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha * (isAudioPlaying ? 0.9 : 0.4)})`;
-                ctx.shadowBlur = isAudioPlaying ? 6 : 2;
-                ctx.shadowColor = '#ffffff';
-                ctx.fill();
-                p.y -= p.speed * (isAudioPlaying ? 1.8 : 1);
-                if (p.y < 0) {
-                    p.y = canvas.height;
-                    p.x = Math.random() * canvas.width;
-                }
-            });
-            requestAnimationFrame(animateStars);
-        }
-        animateStars();
-
-        // Inicializar
-        loadSong(0);
-    </script>
+    <script src="music/playlist_data.js"></script>
+    <script src="player.js"></script>
 </body>
 </html>
