@@ -1,77 +1,77 @@
 [
   {
+    "id": 10,
+    "title": "Doja Cat - Woman ",
+    "file": "music/track_10.mp3"
+  },
+  {
+    "id": 2,
+    "title": "I can't stop the loneliness ",
+    "file": "music/track_2.mp3"
+  },
+  {
+    "id": 3,
+    "title": "Impostor Syndrome ",
+    "file": "music/track_3.mp3"
+  },
+  {
+    "id": 4,
+    "title": "Jósean Log - Doma ",
+    "file": "music/track_4.mp3"
+  },
+  {
+    "id": 6,
+    "title": "Amar Como Tú ",
+    "file": "music/track_6.mp3"
+  },
+  {
+    "id": 7,
+    "title": "Arctic Monkeys - 505 ",
+    "file": "music/track_7.mp3"
+  },
+  {
+    "id": 8,
+    "title": "Cuarteto de Nos - ",
+    "file": "music/track_8.mp3"
+  },
+  {
+    "id": 9,
+    "title": "Djo - End Of Beggining ",
+    "file": "music/track_9.mp3"
+  },
+  {
     "id": 1,
     "title": "Esperón - Tristella",
     "file": "music/track_1.mp3"
   },
   {
-    "id": 2,
-    "title": "I can't stop the loneliness ｜ ANRI ｜ Sub.Español ｜ Lyrics ｜",
-    "file": "music/track_2.mp3"
-  },
-  {
-    "id": 3,
-    "title": "Impostor Syndrome - Sidney Gish (Sub Español + Lyrics)",
-    "file": "music/track_3.mp3"
-  },
-  {
-    "id": 4,
-    "title": "Jósean Log - Doma (Lyric Video)",
-    "file": "music/track_4.mp3"
-  },
-  {
-    "id": 6,
-    "title": "Amar Como Tú - Steven Universe (Letra).",
-    "file": "music/track_6.mp3"
-  },
-  {
-    "id": 7,
-    "title": "Arctic Monkeys - 505 ( My Dress-Up Darling ) ( KzNicxz - Tipografia )",
-    "file": "music/track_7.mp3"
-  },
-  {
-    "id": 8,
-    "title": "Cuarteto de Nos - Enamorado Tuyo ❤️(Letra) ⧸ AMV",
-    "file": "music/track_8.mp3"
-  },
-  {
-    "id": 9,
-    "title": "Djo - End Of Beggining (Español + Lyrics) ｜ Stranger Things",
-    "file": "music/track_9.mp3"
-  },
-  {
-    "id": 10,
-    "title": "Doja Cat - Woman (Sub. Español + Lyrics)",
-    "file": "music/track_10.mp3"
-  },
-  {
     "id": 11,
-    "title": "Esperón - Solare (Letra)",
+    "title": "Esperón - Solare ",
     "file": "music/track_11.mp3"
   },
   {
     "id": 12,
-    "title": "Glup! •Freebola• [LETRA] ｜｜ Katie Mitchell",
+    "title": "Glup! •Freebola• ",
     "file": "music/track_12.mp3"
   },
   {
     "id": 13,
-    "title": "Good Kid - From The Start (Laufey Cover)",
+    "title": "Good Kid - From The Start ",
     "file": "music/track_13.mp3"
   },
   {
     "id": 14,
-    "title": "Harry Styles - Sign Of The Times (sub. español) ｜ Project Hail Mary",
+    "title": " Project Hail Mary",
     "file": "music/track_14.mp3"
   },
   {
     "id": 15,
-    "title": "Kate Bush - Running Up That Hill (Subtitulado en español) Stranger Things 4 (4x04)",
+    "title": "Kate Bush - Running Up That Hill",
     "file": "music/track_15.mp3"
   },
   {
     "id": 16,
-    "title": "Laufey - From The Start (Official Music Video)",
+    "title": "Laufey - From The Start ",
     "file": "music/track_16.mp3"
   },
   {
@@ -81,22 +81,22 @@
   },
   {
     "id": 18,
-    "title": "Wait By The River - Digital Circus ｜ Cover Español Latino",
+    "title": "Wait By The River ",
     "file": "music/track_18.mp3"
   },
   {
     "id": 19,
-    "title": "Y es que me encantas tanto, si me miras mientras canto ⧸⧸ Mon amour Remix (Letra)~ Idoly pride dance",
+    "title": " Mon amour Remix ",
     "file": "music/track_19.mp3"
   },
   {
     "id": 20,
-    "title": "impacto - enjambre ⧸⧸ ft. lo blondo (letra + amv)",
+    "title": " ft. lo blondo ",
     "file": "music/track_20.mp3"
   },
   {
     "id": 21,
-    "title": "＂Nosotros construimos esta casa en recuerdos...＂ 💔 ｜ The Owl House",
+    "title": " The Owl House",
     "file": "music/track_21.mp3"
   }
 ]
