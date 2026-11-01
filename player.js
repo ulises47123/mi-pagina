@@ -1,317 +1,270 @@
 // ==========================================================
-// Cosmic Startpage - Visualizador Estelar 3D Ultra Optimizado
-// Alto rendimiento (60-144 FPS estables):
-// - Batching de dibujo: agrupa trazados en un solo path por color
-// - Sin shadowBlur costoso por partícula en cada frame
-// - Tipado plano y asignaciones directas sin overhead de garbage collector
-// - Limpieza de canvas sin sobrecarga de fillRect persistente
+// Startpage minimalista: reloj, reproductor y lista de canciones
 // ==========================================================
-
-let songIndex = 0;
-let isAudioPlaying = false;
 
 const audio = document.getElementById('audioElement');
 const playBtn = document.getElementById('playBtn');
 const playIcon = document.getElementById('playIcon');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
-const vinylDisc = document.getElementById('vinylDisc');
-const soundEq = document.getElementById('soundEq');
 const trackTitle = document.getElementById('trackTitle');
+const trackList = document.getElementById('trackList');
+const progressBar = document.getElementById('progressBar');
+const progressFill = document.getElementById('progressFill');
+const curTimeEl = document.getElementById('curTime');
+const durTimeEl = document.getElementById('durTime');
 const searchInput = document.getElementById('searchInput');
 
-audio.volume = 1.0;
+const ICON_PLAY = '<path d="M8 5v14l11-7z"/>';
+const ICON_PAUSE = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
 
-// Configuración de Canvas y Perspectiva 3D
-const canvas = document.getElementById('soundCanvas');
-const ctx = canvas.getContext('2d', { alpha: true });
-let width = window.innerWidth;
-let height = window.innerHeight;
-let cx = width * 0.5;
-let cy = height * 0.5;
+let playlist = window.playlist || [];
+let songIndex = 0;
 
-function resizeCanvas() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-    cx = width * 0.5;
-    cy = height * 0.5;
+// ---------- Reloj ----------
+const clockTime = document.getElementById('clockTime');
+const clockDate = document.getElementById('clockDate');
+
+function updateClock() {
+    const now = new Date();
+    clockTime.textContent = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false });
+    clockDate.textContent = now.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' });
 }
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+updateClock();
+setInterval(updateClock, 1000);
 
-// ==========================================================
-// ARRAYS PLANOS Y RENDIMIENTO OPTIMIZADO
-// ==========================================================
-const NUM_STARS = 260; // Cantidad óptima para máxima fluidez y densidad visual
-const starX = new Float32Array(NUM_STARS);
-const starY = new Float32Array(NUM_STARS);
-const starZ = new Float32Array(NUM_STARS);
-const starPZ = new Float32Array(NUM_STARS);
-const starBaseSize = new Float32Array(NUM_STARS);
-const starColorIndex = new Uint8Array(NUM_STARS);
+// ---------- Títulos limpios ----------
+// Los nombres vienen de YouTube: se quitan "(Letra)", "[Lyrics]", "｜ Sub. Español", emojis, etc.
+const JUNK = /\b(sub|subtitulado|lyrics?|letra|español|espanol|amv|cover|official|video)\b/i;
 
-let activePalette = ['#ffffff', '#00f0ff', '#a855f7'];
-let currentProfile = null;
-let currentBeats = [];
-let currentBeatIndex = 0;
+function cleanTitle(raw) {
+    const parts = raw
+        .split(/\s*(?:[｜|]+|⧸+)\s*/)
+        .map(p => p
+            .replace(/\(.*?\)|\[.*?\]|（.*?）/g, '')
+            .replace(/[＂"]/g, '')
+            .replace(/~.*$/, '')
+            .replace(/•/g, ' ')
+            .replace(/[\p{Extended_Pictographic}️]/gu, '')
+            .replace(/\s+/g, ' ')
+            .replace(/[\s.•-]+$/, '')
+            .trim())
+        .filter(Boolean);
 
-// Dinámica del Warp Speed
-let currentWarpSpeed = 1.8;
-let targetWarpSpeed = 1.8;
-let flashIntensity = 0.0;
-
-function resetStar(i, initial = false) {
-    starX[i] = (Math.random() - 0.5) * width * 2.2;
-    starY[i] = (Math.random() - 0.5) * height * 2.2;
-    starZ[i] = initial ? (Math.random() * width) : width;
-    starPZ[i] = starZ[i];
-    starBaseSize[i] = Math.random() * 1.4 + 0.8;
-    starColorIndex[i] = Math.floor(Math.random() * activePalette.length);
+    if (parts.length === 0) return raw.trim();
+    const [first, ...rest] = parts;
+    const extra = rest.filter(p => !JUNK.test(p));
+    return [first, ...extra].join(' · ');
 }
 
-for (let i = 0; i < NUM_STARS; i++) {
-    resetStar(i, true);
-}
-
-function updateStarProfile(profile) {
-    currentProfile = profile || {
-        bpm: 110,
-        direction: 'up',
-        speed: 1.0,
-        colors: ['#ffffff', '#00f0ff', '#a855f7'],
-        beats: []
-    };
-
-    activePalette = currentProfile.colors && currentProfile.colors.length > 0
-        ? currentProfile.colors
-        : ['#ffffff', '#00f0ff', '#a855f7'];
-
-    currentBeats = currentProfile.beats || [];
-    currentBeatIndex = 0;
-
-    for (let i = 0; i < NUM_STARS; i++) {
-        starColorIndex[i] = Math.floor(Math.random() * activePalette.length);
+// ---------- Orden aleatorio ----------
+// Cada vez que se abre la página el orden cambia, así no empieza siempre la misma canción.
+function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
     }
+    return arr;
+}
+
+playlist = shuffle(playlist.slice());
+
+// "Mezclar": la canción actual queda primera y el resto se reordena
+function reshuffle() {
+    const current = playlist[songIndex];
+    const rest = shuffle(playlist.filter((_, i) => i !== songIndex));
+    playlist = [current, ...rest];
+    songIndex = 0;
+    renderList();
+    markActive();
+    trackList.scrollTop = 0;
+}
+
+// ---------- Lista ----------
+let trackButtons = [];
+
+function renderList() {
+    trackList.replaceChildren();
+    trackButtons = playlist.map((song, i) => buildTrack(song, i));
+}
+
+function buildTrack(song, i) {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.className = 'track';
+    btn.type = 'button';
+    btn.title = song.title;
+
+    const num = document.createElement('span');
+    num.className = 'track-num';
+    num.textContent = String(i + 1).padStart(2, '0');
+
+    const name = document.createElement('span');
+    name.className = 'track-name';
+    name.textContent = cleanTitle(song.title);
+
+    btn.append(num, name);
+    btn.addEventListener('click', () => {
+        if (i === songIndex && !audio.paused) {
+            audio.pause();
+        } else {
+            loadSong(i);
+            play();
+        }
+    });
+
+    li.appendChild(btn);
+    trackList.appendChild(li);
+    return btn;
+}
+
+function markActive() {
+    trackButtons.forEach((b, i) => {
+        const active = i === songIndex;
+        b.classList.toggle('active', active);
+        if (active) b.setAttribute('aria-current', 'true');
+        else b.removeAttribute('aria-current');
+    });
+}
+
+renderList();
+document.getElementById('musicCount').textContent = `Música · ${playlist.length}`;
+document.getElementById('shuffleBtn').addEventListener('click', reshuffle);
+
+// ---------- Reproductor ----------
+function formatTime(s) {
+    if (!isFinite(s)) return '0:00';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return `${m}:${String(sec).padStart(2, '0')}`;
 }
 
 function loadSong(index) {
-    if (!window.playlist || window.playlist.length === 0) return;
-    songIndex = index;
-    const song = window.playlist[songIndex];
+    if (playlist.length === 0) return;
+    songIndex = (index + playlist.length) % playlist.length;
+    const song = playlist[songIndex];
     audio.src = song.file;
-    trackTitle.textContent = song.title;
-    currentBeatIndex = 0;
-    updateStarProfile(song.profile);
+    trackTitle.textContent = cleanTitle(song.title);
+    trackTitle.title = song.title;
+    progressFill.style.width = '0%';
+    curTimeEl.textContent = '0:00';
+    durTimeEl.textContent = '0:00';
+
+    markActive();
+    const btn = trackButtons[songIndex];
+    trackList.scrollTop = Math.max(0, btn.offsetTop - trackList.offsetTop - trackList.clientHeight / 2);
+}
+
+function play() {
+    audio.play().catch(e => console.error('Error al reproducir audio:', e));
 }
 
 function togglePlay() {
-    if (isAudioPlaying) {
-        audio.pause();
-    } else {
-        audio.volume = 1.0;
-        audio.play().catch(e => console.error("Error al reproducir audio:", e));
-    }
+    if (audio.paused) play();
+    else audio.pause();
 }
 
-function prevTrack() {
-    if (!window.playlist) return;
-    songIndex = (songIndex - 1 + window.playlist.length) % window.playlist.length;
-    loadSong(songIndex);
-    if (isAudioPlaying) audio.play().catch(e => console.error(e));
-}
-
-function nextTrack() {
-    if (!window.playlist) return;
-    songIndex = (songIndex + 1) % window.playlist.length;
-    loadSong(songIndex);
-    if (isAudioPlaying) audio.play().catch(e => console.error(e));
+function changeTrack(step) {
+    const wasPlaying = !audio.paused;
+    loadSong(songIndex + step);
+    if (wasPlaying) play();
 }
 
 audio.addEventListener('play', () => {
-    isAudioPlaying = true;
-    vinylDisc.classList.add('playing');
-    soundEq.classList.add('active');
-    playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+    playIcon.innerHTML = ICON_PAUSE;
+    playBtn.setAttribute('aria-label', 'Pausa');
 });
 
 audio.addEventListener('pause', () => {
-    isAudioPlaying = false;
-    vinylDisc.classList.remove('playing');
-    soundEq.classList.remove('active');
-    playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+    playIcon.innerHTML = ICON_PLAY;
+    playBtn.setAttribute('aria-label', 'Reproducir');
 });
 
 audio.addEventListener('ended', () => {
-    nextTrack();
-    audio.play().catch(e => console.error(e));
+    loadSong(songIndex + 1);
+    play();
 });
 
-audio.addEventListener('seeked', () => {
-    const curTime = audio.currentTime;
-    currentBeatIndex = currentBeats.findIndex(t => t >= curTime);
-    if (currentBeatIndex === -1) currentBeatIndex = currentBeats.length;
+audio.addEventListener('loadedmetadata', () => {
+    durTimeEl.textContent = formatTime(audio.duration);
+});
+
+let dragging = false;
+
+function showProgress(time) {
+    const pct = audio.duration ? (time / audio.duration) * 100 : 0;
+    progressFill.style.width = pct + '%';
+    curTimeEl.textContent = formatTime(time);
+    progressBar.setAttribute('aria-valuenow', Math.round(pct));
+}
+
+audio.addEventListener('timeupdate', () => {
+    if (!dragging) showProgress(audio.currentTime);
+});
+
+// Barra de tiempo: clic para saltar o arrastrar (el salto se aplica al soltar)
+function timeAt(clientX) {
+    const rect = progressBar.getBoundingClientRect();
+    const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+    return ratio * audio.duration;
+}
+
+progressBar.addEventListener('pointerdown', (e) => {
+    if (!audio.duration) return;
+    dragging = true;
+    progressBar.setPointerCapture(e.pointerId);
+    showProgress(timeAt(e.clientX));
+});
+
+progressBar.addEventListener('pointermove', (e) => {
+    if (dragging) showProgress(timeAt(e.clientX));
+});
+
+function endDrag(e) {
+    if (!dragging) return;
+    dragging = false;
+    audio.currentTime = timeAt(e.clientX);
+}
+
+progressBar.addEventListener('pointerup', endDrag);
+progressBar.addEventListener('pointercancel', () => { dragging = false; });
+
+progressBar.addEventListener('keydown', (e) => {
+    if (!audio.duration) return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        e.stopPropagation();
+        audio.currentTime += e.key === 'ArrowRight' ? 5 : -5;
+    }
 });
 
 playBtn.addEventListener('click', togglePlay);
-prevBtn.addEventListener('click', prevTrack);
-nextBtn.addEventListener('click', nextTrack);
+prevBtn.addEventListener('click', () => changeTrack(-1));
+nextBtn.addEventListener('click', () => changeTrack(1));
 
-// Atajos de teclado
+// ---------- Atajos de teclado ----------
 window.addEventListener('keydown', (e) => {
     if (document.activeElement === searchInput) {
         if (e.key === 'Escape') searchInput.blur();
         return;
     }
+    // No robar Espacio/Enter a botones o links enfocados
+    const onControl = e.target.closest && e.target.closest('button, a, [role="slider"]');
+
     if (e.key === '/') {
         e.preventDefault();
         searchInput.focus();
-    } else if (e.code === 'Space') {
+    } else if (e.code === 'Space' && !onControl) {
         e.preventDefault();
         togglePlay();
     } else if (e.key === 'ArrowRight') {
         e.preventDefault();
-        nextTrack();
+        changeTrack(1);
     } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        prevTrack();
+        changeTrack(-1);
     }
 });
 
-// ==========================================================
-// LOOP DE RENDERIZADO ULTRA EFICIENTE (BATCH RENDERING)
-// ==========================================================
-const FOV = 320;
-let lastFrameTime = performance.now();
-
-function renderStarfield(now) {
-    const dt = Math.min((now - lastFrameTime) / 1000.0, 0.1);
-    lastFrameTime = now;
-
-    // Limpieza directa y rápida del frame
-    ctx.clearRect(0, 0, width, height);
-
-    if (isAudioPlaying && currentBeats.length > 0) {
-        const curTime = audio.currentTime;
-
-        let beatHit = false;
-        while (currentBeatIndex < currentBeats.length && curTime >= currentBeats[currentBeatIndex]) {
-            beatHit = true;
-            currentBeatIndex++;
-        }
-
-        if (currentBeatIndex > 0 && curTime < currentBeats[currentBeatIndex - 1]) {
-            currentBeatIndex = 0;
-        }
-
-        if (beatHit) {
-            targetWarpSpeed = 22.0 * (currentProfile.speed || 1.0);
-            flashIntensity = 1.0;
-        } else {
-            targetWarpSpeed = 4.2 * (currentProfile.speed || 1.0);
-        }
-
-        currentWarpSpeed += (targetWarpSpeed - currentWarpSpeed) * 0.16;
-        flashIntensity += (0.0 - flashIntensity) * 0.12;
-    } else {
-        targetWarpSpeed = 1.2;
-        currentWarpSpeed += (targetWarpSpeed - currentWarpSpeed) * 0.08;
-        flashIntensity += (0.0 - flashIntensity) * 0.1;
-    }
-
-    const direction = currentProfile ? currentProfile.direction : 'up';
-    const isDown = (direction === 'down');
-    const speed = currentWarpSpeed;
-    const invWidth = 1.0 / width;
-
-    // Agrupación de trazados por color (Batching) para reducir drásticamente llamadas GPU/Canvas
-    const paletteLen = activePalette.length;
-    // Trazado de estelas (líneas) y cabezas (círculos)
-    for (let c = 0; c < paletteLen; c++) {
-        const color = activePalette[c];
-
-        ctx.strokeStyle = flashIntensity > 0.4 ? '#ffffff' : color;
-        ctx.fillStyle = flashIntensity > 0.6 ? '#ffffff' : color;
-        ctx.lineWidth = isAudioPlaying ? 2.0 : 1.2;
-
-        let hasLines = false;
-        let hasPoints = false;
-
-        // Iniciar path de líneas
-        ctx.beginPath();
-        for (let i = 0; i < NUM_STARS; i++) {
-            if (starColorIndex[i] !== c) continue;
-
-            starPZ[i] = starZ[i];
-
-            if (isDown) {
-                starZ[i] += speed;
-                if (starZ[i] > width) {
-                    resetStar(i);
-                    starZ[i] = 18;
-                    starPZ[i] = starZ[i];
-                }
-            } else {
-                starZ[i] -= speed;
-                if (starZ[i] < 18) {
-                    resetStar(i);
-                }
-            }
-
-            const z = starZ[i];
-            if (z <= 1) continue;
-
-            const k = FOV / z;
-            const px = starX[i] * k + cx;
-            const py = starY[i] * k + cy;
-
-            if (px < -10 || px > width + 10 || py < -10 || py > height + 10) continue;
-
-            const pk = FOV / starPZ[i];
-            const prevX = starX[i] * pk + cx;
-            const prevY = starY[i] * pk + cy;
-
-            if (isAudioPlaying && (Math.abs(px - prevX) + Math.abs(py - prevY) > 1.5)) {
-                ctx.moveTo(prevX, prevY);
-                ctx.lineTo(px, py);
-                hasLines = true;
-            }
-        }
-        if (hasLines) {
-            ctx.stroke();
-        }
-
-        // Iniciar path de cabezas de estrellas
-        ctx.beginPath();
-        for (let i = 0; i < NUM_STARS; i++) {
-            if (starColorIndex[i] !== c) continue;
-            const z = starZ[i];
-            if (z <= 1) continue;
-
-            const k = FOV / z;
-            const px = starX[i] * k + cx;
-            const py = starY[i] * k + cy;
-
-            if (px < -10 || px > width + 10 || py < -10 || py > height + 10) continue;
-
-            const depthFactor = 1.0 - z * invWidth;
-            const rad = Math.max(0.7, starBaseSize[i] * (1.0 + depthFactor * 1.8));
-
-            ctx.moveTo(px + rad, py);
-            ctx.arc(px, py, rad, 0, 6.2831853); // Math.PI * 2
-            hasPoints = true;
-        }
-        if (hasPoints) {
-            ctx.fill();
-        }
-    }
-
-    requestAnimationFrame(renderStarfield);
-}
-
-// Inicializar
-(function init() {
-    if (window.playlist && window.playlist.length > 0) {
-        loadSong(0);
-        requestAnimationFrame(renderStarfield);
-    }
-})();
+// ---------- Inicio ----------
+if (playlist.length > 0) loadSong(0);

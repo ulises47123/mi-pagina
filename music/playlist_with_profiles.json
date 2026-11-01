@@ -189,48 +189,6 @@
     }
   },
   {
-    "id": 11,
-    "title": "Esperón - Solare (Letra)",
-    "file": "music/track_11.mp3",
-    "profile": {
-      "bpm": 129,
-      "intensity": 1.78,
-      "direction": "up",
-      "speed": 1.29,
-      "starCount": 61,
-      "sizeMultiplier": 1.42,
-      "paletteName": "Cosmic Cyberpunk (Energía Media-Alta)",
-      "colors": [
-        "#a855f7",
-        "#ec4899",
-        "#38bdf8",
-        "#f43f5e"
-      ],
-      "glowColor": "rgba(168, 85, 247, 0.6)"
-    }
-  },
-  {
-    "id": 12,
-    "title": "Glup! •Freebola• [LETRA] ｜｜ Katie Mitchell",
-    "file": "music/track_12.mp3",
-    "profile": {
-      "bpm": 136,
-      "intensity": 1.08,
-      "direction": "up",
-      "speed": 1.29,
-      "starCount": 64,
-      "sizeMultiplier": 1.18,
-      "paletteName": "Supernova Neon (Alta Energía)",
-      "colors": [
-        "#ff007f",
-        "#00f0ff",
-        "#ffe600",
-        "#ffffff"
-      ],
-      "glowColor": "rgba(255, 0, 128, 0.7)"
-    }
-  },
-  {
     "id": 13,
     "title": "Good Kid - From The Start (Laufey Cover)",
     "file": "music/track_13.mp3",
@@ -262,27 +220,6 @@
       "speed": 1.14,
       "starCount": 56,
       "sizeMultiplier": 1.36,
-      "paletteName": "Deep Nebula (Medio)",
-      "colors": [
-        "#06b6d4",
-        "#3b82f6",
-        "#818cf8",
-        "#c084fc"
-      ],
-      "glowColor": "rgba(6, 182, 212, 0.55)"
-    }
-  },
-  {
-    "id": 15,
-    "title": "Kate Bush - Running Up That Hill (Subtitulado en español) Stranger Things 4 (4x04)",
-    "file": "music/track_15.mp3",
-    "profile": {
-      "bpm": 108,
-      "intensity": 0.68,
-      "direction": "both",
-      "speed": 1.03,
-      "starCount": 52,
-      "sizeMultiplier": 1.04,
       "paletteName": "Deep Nebula (Medio)",
       "colors": [
         "#06b6d4",
@@ -367,27 +304,6 @@
       "speed": 1.14,
       "starCount": 56,
       "sizeMultiplier": 1.17,
-      "paletteName": "Deep Nebula (Medio)",
-      "colors": [
-        "#06b6d4",
-        "#3b82f6",
-        "#818cf8",
-        "#c084fc"
-      ],
-      "glowColor": "rgba(6, 182, 212, 0.55)"
-    }
-  },
-  {
-    "id": 20,
-    "title": "impacto - enjambre ⧸⧸ ft. lo blondo (letra + amv)",
-    "file": "music/track_20.mp3",
-    "profile": {
-      "bpm": 108,
-      "intensity": 1.31,
-      "direction": "both",
-      "speed": 1.03,
-      "starCount": 52,
-      "sizeMultiplier": 1.26,
       "paletteName": "Deep Nebula (Medio)",
       "colors": [
         "#06b6d4",
